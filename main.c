@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include"PCB.h"
+#include"scheduler.h"
 #include"queue.h"
 
 int main(){
@@ -23,6 +24,10 @@ int main(){
     print_queue();
 
     deque();
+
+    print_queue();
+
+    FCFS();
 
     print_queue();
 

@@ -6,6 +6,8 @@
 PROCESS p_table[10];
 int p_count;
 
+static short nextPID = 0;
+
 char *p_st[] = {"NEW" , "READY" , "RUNNING" , "BLOCKED" , "WAITING" , "TERMINATING"};
 
 int incre_pc(int init_pc){
@@ -18,7 +20,7 @@ int create_process(char* name){
     p.PID = rand()%10;
     for(int i=0 ; i<p_count ; i++){
         if(p.PID == p_table[i].PID){
-            p.PID = (p.PID+3)/5;
+            p.PID = nextPID++;
         }
     }
     strcpy(p.P_NAME , name);

@@ -3,8 +3,6 @@
 #include"PCB.h"
 #include"queue.h"
 
-
-
 NODE* head = NULL;
 
 NODE* create_node(PROCESS p){
@@ -33,10 +31,6 @@ void enque(PROCESS p){
 void deque(){
     if(head == NULL){
         printf("QUEUE IS EMPTY.\n");
-        return;
-    }
-    if(head->next == NULL){
-        free(head);
         return;
     }
     NODE* temp = head;
