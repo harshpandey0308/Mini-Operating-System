@@ -17,12 +17,15 @@ typedef struct NODE{
     int REG[10];
     int priority;
     STATE state;
+    int is_ready;
+    int is_running;
+    int is_waiting;
 }PROCESS;
 
 extern PROCESS p_table[];
 extern int p_count;
 
-int incre_pc(int init_pc);
+int incre_pc();
 
 int create_process(char* name);
 

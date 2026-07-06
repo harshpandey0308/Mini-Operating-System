@@ -8,7 +8,8 @@ typedef struct qnode{
     struct qnode *next;
 }NODE;
 
-extern NODE* head;
+extern NODE* head1;
+extern NODE* head2;
 
 NODE* create_node(PROCESS p);
 

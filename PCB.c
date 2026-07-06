@@ -10,21 +10,18 @@ static short nextPID = 0;
 
 char *p_st[] = {"NEW" , "READY" , "RUNNING" , "BLOCKED" , "WAITING" , "TERMINATING"};
 
-int incre_pc(int init_pc){
+static int init_pc = 0;
+int incre_pc(){
     init_pc++;
     return init_pc;
 }
 
 int create_process(char* name){
     PROCESS p = {0};
-    p.PID = rand()%10;
-    for(int i=0 ; i<p_count ; i++){
-        if(p.PID == p_table[i].PID){
-            p.PID = nextPID++;
-        }
-    }
+    p.PID = nextPID++;
+    
     strcpy(p.P_NAME , name);
-    p.PC = incre_pc(0);
+    p.PC = incre_pc();
     p.priority = p_count;
     p.state = NEW;
     p_table[p_count] = p;

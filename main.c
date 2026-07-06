@@ -13,6 +13,8 @@ int main(){
     Process("Chatgpt");
     Process("Google");
 
+    printf("******BEFORE ENTERING READY QUEUE*******\n");
+    printf("\n");
     display_pTABLE();
     printf("\n");
 
