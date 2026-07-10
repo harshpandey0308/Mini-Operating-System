@@ -7,18 +7,24 @@ typedef struct qnode{
     PROCESS P;
     struct qnode *next;
 }NODE;
+typedef struct Q{
+    NODE* head; 
+    NODE* tail;
+}QUEUE;
 
-extern NODE* head1;
-extern NODE* head2;
+extern QUEUE ready_queue;
+extern QUEUE waiting_queue;
 
-NODE* create_node(PROCESS p);
+NODE* create_node(PROCESS *p);
 
-void enque(PROCESS p);
+void enque(PROCESS *p , QUEUE *queue);
 
-void deque();
+NODE *deque(QUEUE *queue);
 
-NODE *peek();
+NODE *peek(QUEUE *queue);
 
-void print_queue();
+int is_empty(QUEUE *queue);
+
+void print_queue(QUEUE *queue);
 
 #endif

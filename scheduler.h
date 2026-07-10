@@ -1,20 +1,19 @@
-#include<stdio.h>
 #include"PCB.h"
+#include"queue.h"
+
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
 typedef struct cpu{
-    __int16 PID;
-    __int8 PC;
-    __int16 REG[10];
-    char name[10];
-    STATE cpu_state;
-    int instruct_no;
+    PROCESS *current_process;
+
+    int PC;
+    int REG[10];
     int reg_count;
+    int instr_no;
+    int has_IO_call;
 }CPU;
 
-extern CPU c1;
-
-void FCFS();
+void scheduler(PROCESS *p);
 
 #endif

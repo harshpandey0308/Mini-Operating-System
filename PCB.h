@@ -10,16 +10,13 @@ typedef enum p_state{
     TERMINATED
 }STATE;
 
-typedef struct NODE{
+typedef struct p_NODE{
     int PID;
     char P_NAME[20];
     int PC;
     int REG[10];
     int priority;
     STATE state;
-    int is_ready;
-    int is_running;
-    int is_waiting;
 }PROCESS;
 
 extern PROCESS p_table[];

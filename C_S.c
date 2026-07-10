@@ -1,40 +1,48 @@
 #include<stdio.h>
-#include"PCB.h"
-#include"queue.h"
+#include<string.h>
 #include"scheduler.h"
+#include"C_S.h"
 
-void save_context(CPU c){
-    PROCESS q = {0};
-    strcpy(q.P_NAME , c.name);
-    q.PID = c.PID;
-    q.PC = c.PC;
-    for(int i=0 ; i<10 ; i++){
-        q.REG[i] = c.REG[i];
-    }
-    q.state = WAITING;
-    enque(q);
-}
-
-NODE* restore_context(NODE* t){
-    NODE* temp = t;
+CPU *restore_context(CPU *c , PROCESS *p){
+    c->current_process = p;
     
-    CPU c = {0};
-    c.PID = temp->P.PID;
-    strcpy(c.name , temp->P.P_NAME);
-    c.PC = temp->P.PC;
-    for(int i=0 ; i<10 ; i++){
-        c.REG[i] = temp->P.REG[i];
+    c->PC = p->PC;
+    for(int i=0 ; i<c->reg_count ; i++){
+        c->REG[i] = p->REG[i];
     }
-    c.cpu_state = RUNNING;
+    c->current_process->state = RUNNING;
+    return c;
 }
 
-void context_switch(CPU c){
-    save_context(c);
-    if(head1->P.priority > head2->P.priority){
-        restore_context(head1);
-    }
-    else{
-        restore_context(head2);
+PROCESS *save_context(CPU *c){
+    PROCESS *p;
+    p = c->current_process;
+    p->PC = c->PC;
+    for(int i=0 ; i<c->reg_count ; i++){
+        p->REG[i] = c->REG[i];
     }
 
+    return p;
+}
+
+int execute(CPU *c){
+    printf("PROCESS PID = %d is executing.\n",c->current_process->PID);
+
+    for(int i=0 ; i<c->instr_no ; i++){
+        printf("PC = %d / INSTRUCTION NO. = %d executed.\n",c->PC , i+1);
+        printf("REG %d = %d\n",i , c->REG[i]);
+        c->PC++;
+    }
+    if(c->has_IO_call){
+        printf("IO CALL ....\n");
+        c->current_process->state = BLOCKED;
+        return c->current_process->state;
+    }
+    printf("PROCESS IS EXECUTING ...\n");
+
+    printf("PROCESS IS COMPLETED.\n");
+
+    c->current_process->state = TERMINATED;
+
+    return c->current_process->state;
 }

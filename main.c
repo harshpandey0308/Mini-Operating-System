@@ -18,20 +18,25 @@ int main(){
     display_pTABLE();
     printf("\n");
 
-    enque(p_table[0]);
-    enque(p_table[2]);
-    enque(p_table[5]);
-    enque(p_table[7]);
+    enque(&p_table[0] , &ready_queue);
+    enque(&p_table[2] , &ready_queue);
+    enque(&p_table[5] , &ready_queue);
+    enque(&p_table[7] , &ready_queue);
 
-    print_queue();
+    print_queue(&ready_queue);
 
-    deque();
+    deque(&ready_queue);
 
-    print_queue();
+    print_queue(&ready_queue);
 
-    FCFS();
+    NODE *temp = ready_queue.head;
 
-    print_queue();
+    while(temp != NULL){
+        scheduler(&temp->P);
+        temp = peek(&ready_queue);
+    }
+
+    print_queue(&ready_queue);
 
     return 0;
 
