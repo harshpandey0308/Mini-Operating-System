@@ -8,7 +8,7 @@ int p_count;
 
 static short nextPID = 0;
 
-char *p_st[] = {"NEW" , "READY" , "RUNNING" , "BLOCKED" , "WAITING" , "TERMINATING"};
+char *p_st[] = {"NEW" , "READY" , "RUNNING" , "BLOCKED" , "WAITING" , "TERMINATED"};
 
 static int init_pc = 0;
 int incre_pc(){
@@ -24,6 +24,9 @@ int create_process(char* name){
     p.PC = incre_pc();
     p.priority = p_count;
     p.state = NEW;
+    for(int i=0 ; i<4 ; i++){
+        p.REG[i] = rand()%4;
+    }
     p_table[p_count] = p;
     p_count++;
     return p.PID;

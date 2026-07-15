@@ -5,6 +5,10 @@
 #ifndef C_S_H
 #define C_S_H
 
+int io_update(PROCESS *p);
+
+void remove_completed_io();
+
 CPU *restore_context(CPU *c , PROCESS *p);
 
 int execute(CPU *c);

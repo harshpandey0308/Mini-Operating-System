@@ -4,7 +4,7 @@
 #define QUEUE_H
 
 typedef struct qnode{
-    PROCESS P;
+    PROCESS *P;
     struct qnode *next;
 }NODE;
 typedef struct Q{

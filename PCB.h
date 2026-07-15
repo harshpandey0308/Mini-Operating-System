@@ -17,6 +17,7 @@ typedef struct p_NODE{
     int REG[10];
     int priority;
     STATE state;
+    int io_remaining;
 }PROCESS;
 
 extern PROCESS p_table[];

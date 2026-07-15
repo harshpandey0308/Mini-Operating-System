@@ -14,6 +14,6 @@ typedef struct cpu{
     int has_IO_call;
 }CPU;
 
-void scheduler(PROCESS *p);
+void scheduler(CPU *c , PROCESS *p);
 
 #endif

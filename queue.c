@@ -8,8 +8,8 @@ QUEUE waiting_queue = {NULL , NULL};
 
 NODE* create_node(PROCESS *p){
     NODE* q = (NODE*)malloc(sizeof(NODE));
-    q->P = *p;
-    q->P.state = READY;
+    q->P = p;
+    q->P->state = READY;
     q->next = NULL;
     return q;
 }
@@ -33,6 +33,11 @@ void enque(PROCESS *p , QUEUE *queue){
 
 NODE *deque( QUEUE * queue){
     NODE* temp = queue->head;
+    
+    if(temp == NULL){
+        return NULL;
+    }
+
     queue->head = temp->next;
     return temp;
 }
@@ -45,6 +50,7 @@ int is_empty(QUEUE *queue){
     if(queue->head == NULL){
         return 1;
     }
+    return 0;
 }
 
 void print_queue(QUEUE *queue){
@@ -57,7 +63,7 @@ void print_queue(QUEUE *queue){
         if(temp == queue->head){
             printf("HEAD->");
         }
-        printf("%d->",temp->P.PID);
+        printf("%d->",temp->P->PID);
         temp = temp->next;
         if(temp == NULL){
             printf("NULL\n");

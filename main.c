@@ -1,7 +1,11 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include"PCB.h"
 #include"scheduler.h"
+#include"C_S.h"
 #include"queue.h"
+
+CPU c = {0};
 
 int main(){
     Process("chrome");
@@ -25,18 +29,40 @@ int main(){
 
     print_queue(&ready_queue);
 
-    deque(&ready_queue);
+    c.reg_count = 4;
+    c.instr_no = 5;
+    c.has_IO_call = 0;
 
-    print_queue(&ready_queue);
+    NODE *temp;
 
-    NODE *temp = ready_queue.head;
+    while((temp = deque(&ready_queue)) != NULL){
+        printf("scheduling process %s to cpu\n",temp->P->P_NAME);
+        scheduler(&c , temp->P);
+        free(temp);
+    }
 
-    while(temp != NULL){
-        scheduler(&temp->P);
-        temp = peek(&ready_queue);
+    printf("all process scheduled and executed properly.\n");
+
+    if(is_empty(&waiting_queue)){
+        printf("NO PROCESS IN THE WAITING QUEUE , ALL PROCESS EXECUTES SUCCESSFULLY.\n");
+    }
+    else{
+        NODE* temp1;
+        int itr = 1;
+        while(waiting_queue.head != NULL){
+            remove_completed_io();
+
+            PROCESS *p = deque(&ready_queue)->P;
+
+            scheduler(&c , p);
+        }
     }
 
     print_queue(&ready_queue);
+
+    print_queue(&waiting_queue);
+
+    display_pTABLE();
 
     return 0;
 

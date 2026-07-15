@@ -1,35 +1,30 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include"PCB.h"
 #include"queue.h"
 #include"scheduler.h"
 #include"C_S.h"
 
+void scheduler(CPU *c , PROCESS *p){
+    printf("\n");
+    printf("\n ---------------------PROCESS START------------------\n");
+    printf("scheduling of process %s and pid %d.\n",p->P_NAME , p->PID);
 
-void scheduler(PROCESS *p){
-    CPU *c;
+    printf("STORING PROCESS IN CPU.\n");
+    restore_context(c , p);
 
-    c->instr_no = 4;
-    c->reg_count = 4;
-    c->has_IO_call = 0;
+    printf("PROCESS STORED , NOW PROCESS IS EXECUTING\n");
 
-    restore_context(&c , &p);
-
-    STATE current_state = execute(&c);
+    STATE current_state = execute(c);
 
     if(current_state == BLOCKED){
         PROCESS *q = save_context(c);
-        q->state = BLOCKED;
         enque(q , &waiting_queue);
-        deque(&ready_queue);
-        restore_context(&c , &p);
     }
     else if(current_state == TERMINATED){
-        deque(&ready_queue);
-        restore_context(&c , &ready_queue.head->P);
+        save_context(c);
+        printf("THE PROCESS IS TERMINATED.\n");
+        printf("-------------------process finished--------------------\n");
+        printf("\n");
     }
-    else{
-        printf("PROCESS FINISHED.\n");
-        c->current_process->state = TERMINATED;
-    }
-
 }
