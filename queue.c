@@ -19,6 +19,7 @@ void enque(PROCESS *p , QUEUE *queue){
 
     if(queue->head == NULL){
         queue->head = p1;
+        queue->tail = p1;
         return;
     }
     
@@ -38,6 +39,11 @@ NODE *deque( QUEUE * queue){
         return NULL;
     }
 
+    if(queue->head == queue->tail){
+        queue->head = temp->next;
+        queue->tail = temp->next;
+    }
+
     queue->head = temp->next;
     return temp;
 }
@@ -54,8 +60,9 @@ int is_empty(QUEUE *queue){
 }
 
 void print_queue(QUEUE *queue){
-    if(queue->head == NULL){
+    if(queue->head == NULL && queue->tail == NULL){
         printf("THE QUEUE IS EMPTY.\n");
+        return;
     }
     NODE* temp = queue->head;
     printf("%20s\n","---------------QUEUE-PID--------------");

@@ -13,13 +13,15 @@ void scheduler(CPU *c , PROCESS *p){
     printf("STORING PROCESS IN CPU.\n");
     restore_context(c , p);
 
-    printf("PROCESS STORED , NOW PROCESS IS EXECUTING\n");
+    //printf("PROCESS STORED , NOW PROCESS IS EXECUTING\n");
 
     STATE current_state = execute(c);
 
     if(current_state == BLOCKED){
         PROCESS *q = save_context(c);
         enque(q , &waiting_queue);
+        q->state = BLOCKED;
+        //printf("the process state is %d\n",q->state);
     }
     else if(current_state == TERMINATED){
         save_context(c);

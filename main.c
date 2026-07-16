@@ -35,28 +35,29 @@ int main(){
 
     NODE *temp;
 
-    while((temp = deque(&ready_queue)) != NULL){
-        printf("scheduling process %s to cpu\n",temp->P->P_NAME);
-        scheduler(&c , temp->P);
+    while(!is_empty(&ready_queue) || !is_empty(&waiting_queue)){
+        //printf("the new process is %s with pid %d\n",ready_queue.head->P->P_NAME , ready_queue.head->P->PID);
+        printf("===========KERNEL TICK===========\n");
+        print_queue(&waiting_queue);
+        remove_completed_io();
+        printf("checking ready queue.\n");
+
+        if(ready_queue.head == NULL){
+            printf("IDLE CPU\n");
+            continue;
+        }
+        
+        temp = deque(&ready_queue);
+        PROCESS *p = temp->P;
+
+        scheduler(&c , p);
+        printf("process %s is executed\n",temp->P->P_NAME);
+        //print_queue(&ready_queue);
         free(temp);
+        //print_queue(&waiting_queue);
     }
 
     printf("all process scheduled and executed properly.\n");
-
-    if(is_empty(&waiting_queue)){
-        printf("NO PROCESS IN THE WAITING QUEUE , ALL PROCESS EXECUTES SUCCESSFULLY.\n");
-    }
-    else{
-        NODE* temp1;
-        int itr = 1;
-        while(waiting_queue.head != NULL){
-            remove_completed_io();
-
-            PROCESS *p = deque(&ready_queue)->P;
-
-            scheduler(&c , p);
-        }
-    }
 
     print_queue(&ready_queue);
 
