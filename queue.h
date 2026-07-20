@@ -1,30 +1,34 @@
-#include"PCB.h"
+#include<stddef.h>
+#include<stdbool.h>
 
 #ifndef QUEUE_H
 #define QUEUE_H
 
-typedef struct qnode{
-    PROCESS *P;
-    struct qnode *next;
-}NODE;
-typedef struct Q{
-    NODE* head; 
-    NODE* tail;
+typedef struct queue_node{
+    void *data;
+    struct queue_node *next;
+}QUEUE_NODE;
+typedef struct queue{
+    QUEUE_NODE *head; 
+    QUEUE_NODE *tail;
+    int size;
 }QUEUE;
 
 extern QUEUE ready_queue;
 extern QUEUE waiting_queue;
 
-NODE* create_node(PROCESS *p);
+void queue_init(QUEUE *Q);
 
-void enque(PROCESS *p , QUEUE *queue);
+bool queue_enque(QUEUE *Q , void *data);
 
-NODE *deque(QUEUE *queue);
+void *queue_deque(QUEUE *Q);
 
-NODE *peek(QUEUE *queue);
+void *queue_front(const QUEUE *Q);
 
-int is_empty(QUEUE *queue);
+bool queue_is_empty(const QUEUE *Q);
 
-void print_queue(QUEUE *queue);
+int queue_size(const QUEUE *Q);
+
+void destroy_queue(QUEUE *Q);
 
 #endif

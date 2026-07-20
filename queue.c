@@ -1,35 +1,35 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 #include"PCB.h"
 #include"queue.h"
 
-QUEUE ready_queue = {NULL , NULL};
-QUEUE waiting_queue = {NULL , NULL};
+QUEUE ready_queue;
+QUEUE waiting_queue;
 
-NODE* create_node(PROCESS *p){
-    NODE* q = (NODE*)malloc(sizeof(NODE));
-    q->P = p;
-    q->P->state = READY;
-    q->next = NULL;
-    return q;
+void queue_init(QUEUE *Q){
+    Q->head = NULL;
+    Q->tail = NULL;
+    Q->size = 0;
 }
 
-void enque(PROCESS *p , QUEUE *queue){
-    NODE* p1 = create_node(p);
+bool queue_enque(QUEUE *Q , void *data){
+    Q = (QUEUE*)malloc(sizeof(QUEUE));
 
-    if(queue->head == NULL){
-        queue->head = p1;
-        queue->tail = p1;
-        return;
+    if(Q == NULL){
+        return false;
     }
-    
-    NODE* temp = queue->head;
-    while(temp->next != NULL){
-        temp = temp->next;
+    if(Q->head == NULL){
+        Q->head = data;
+        Q->tail = data;
+        Q->tail->next = NULL;
     }
-    temp->next = p1;
-    queue->tail = p1;
-
+    else{
+        Q->tail->next = data;
+        Q->tail = data;
+    }
+    Q->size++;
+    return true;
 }
 
 NODE *deque( QUEUE * queue){
