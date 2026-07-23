@@ -11,7 +11,7 @@ typedef struct queue_node{
 typedef struct queue{
     QUEUE_NODE *head; 
     QUEUE_NODE *tail;
-    int size;
+    size_t size;
 }QUEUE;
 
 extern QUEUE ready_queue;
@@ -21,13 +21,13 @@ void queue_init(QUEUE *Q);
 
 bool queue_enque(QUEUE *Q , void *data);
 
-void *queue_deque(QUEUE *Q);
+bool queue_deque(QUEUE *Q , void **out_data);
 
-void *queue_front(const QUEUE *Q);
+bool queue_front(const QUEUE *Q);
 
 bool queue_is_empty(const QUEUE *Q);
 
-int queue_size(const QUEUE *Q);
+size_t queue_size(const QUEUE *Q);
 
 void destroy_queue(QUEUE *Q);
 

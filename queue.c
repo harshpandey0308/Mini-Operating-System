@@ -14,66 +14,99 @@ void queue_init(QUEUE *Q){
 }
 
 bool queue_enque(QUEUE *Q , void *data){
-    Q = (QUEUE*)malloc(sizeof(QUEUE));
-
     if(Q == NULL){
         return false;
     }
+
+    QUEUE_NODE *q_node = (QUEUE_NODE*)malloc(sizeof(QUEUE_NODE));
+
+    if(q_node == NULL){
+        return false;
+    }
+    
+    q_node->data = data;
+    q_node->next = NULL;
+
     if(Q->head == NULL){
-        Q->head = data;
-        Q->tail = data;
-        Q->tail->next = NULL;
+        Q->head = q_node;
+        Q->tail = q_node;
     }
     else{
-        Q->tail->next = data;
-        Q->tail = data;
+        Q->tail->next = q_node;
+        Q->tail = q_node;
     }
     Q->size++;
     return true;
 }
 
-NODE *deque( QUEUE * queue){
-    NODE* temp = queue->head;
+bool queue_deque(QUEUE *Q , void **out_data){
+    if(Q == NULL){
+        return false;
+    }
+
+    if(out_data == NULL){
+        return false;
+    }
+
+    if(queue_is_empty(Q)){
+        return false;
+    }
+
+    *out_data = Q->head->data;
+    QUEUE_NODE *temp = Q->head;
+    Q->head = Q->head->next;
+    if(Q->head == NULL){
+        Q->tail = NULL;
+    }
+    free(temp);
+    temp = NULL;
+    Q->size--;
+    return true;
+}
+
+bool queue_is_empty(const QUEUE *Q){
+    if(Q == NULL){
+        return true;
+    }
+    return (Q->size == 0);
+}
+
+size_t queue_size(const QUEUE *Q){
+    if(Q == NULL){
+        return 0;
+    }
+    return Q->size;
+}
+
+bool queue_front(const QUEUE *Q , void **out_data){
+    if(Q == NULL){
+        return false;
+    }
+    if(out_data == NULL){
+        return false;
+    }
+    if(queue_is_empty(Q)){
+        return false;
+    }
+
+    *out_data = Q->head->data;
+    return true;
+}
+
+void queue_destroy(QUEUE *Q){
+    if(Q == NULL){
+        return ;
+    }
     
-    if(temp == NULL){
-        return NULL;
+    QUEUE_NODE *current = Q->head;
+    
+    while(current != NULL){
+        QUEUE_NODE *next = current->next;
+        free(current);
+        current = next;
     }
-
-    if(queue->head == queue->tail){
-        queue->head = temp->next;
-        queue->tail = temp->next;
-    }
-
-    queue->head = temp->next;
-    return temp;
-}
-
-NODE *peek(QUEUE *queue){
-    return queue->head;
-}
-
-int is_empty(QUEUE *queue){
-    if(queue->head == NULL){
-        return 1;
-    }
-    return 0;
-}
-
-void print_queue(QUEUE *queue){
-    if(queue->head == NULL && queue->tail == NULL){
-        printf("THE QUEUE IS EMPTY.\n");
-        return;
-    }
-    NODE* temp = queue->head;
-    printf("%20s\n","---------------QUEUE-PID--------------");
-    while(temp != NULL){
-        if(temp == queue->head){
-            printf("HEAD->");
-        }
-        printf("%d->",temp->P->PID);
-        temp = temp->next;
-        if(temp == NULL){
-            printf("NULL\n");
-        }
-    }
+    Q->head = NULL;
+    Q->tail = NULL;
+    Q->size = 0;
+    
 }
